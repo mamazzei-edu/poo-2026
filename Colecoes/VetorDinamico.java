@@ -1,3 +1,5 @@
+import java.util.EmptyStackException;
+
 public class VetorDinamico {
     public int[] elementos;
     public int quantidade;
@@ -21,7 +23,7 @@ public class VetorDinamico {
 
     public void adicionar(int elemento) {
         if(estaCheio()) {  
-            aumentarCapacidade();
+            redimensionar(2);
         }
         this.elementos[this.quantidade] = elemento;
         this.quantidade++;
@@ -34,6 +36,43 @@ public class VetorDinamico {
             aux[i] = this.elementos[i];
         }
         this.elementos = aux;
+    }
+
+    public boolean estaVazio() {
+        return this.quantidade == 0;
+    }
+
+    public void remover() {
+        if (!estaVazio())
+            this.quantidade--;
+        if (this.capacidade > 4 && this.quantidade <= this.capacidade /4){
+            this.redimensionar(0.5);
+        }
+    }
+
+    public void reduzirCapacidade(){
+        int[] aux = new int[this.capacidade / 2];
+        for (int i = 0; i< this.quantidade; i++) {
+            aux[i]=this.elementos[i];
+        }
+        this.elementos=aux;
+        this.capacidade /=2;
+    }
+
+    private void redimensionar(double valor) {
+        int[] aux = new int[(int)(this.capacidade * valor)];
+        for (int i = 0; i < this.quantidade; i++) {
+            aux[i] = this.elementos[i];
+        }
+        this.elementos= aux;
+        this.capacidade = (int)(this.capacidade * valor);
+    }
+
+    public void exibir() {
+        System.out.printf("Qtde: %d, Cap: %d\n",this.quantidade, this.capacidade);
+        for (int i=0; i<this.quantidade;i++) {
+            System.out.print(this.elementos[i] + " ");
+        }
     }
 
 }
